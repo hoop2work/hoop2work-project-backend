@@ -10,22 +10,27 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // Permit all requests to /auth/** (e.g. /auth/login, /auth/register)
                         .requestMatchers("/auth/**").permitAll()
-                        // All other requests require authentication
                         .anyRequest().authenticated()
                 )
-                // Disable CSRF for stateless APIs (common for JWT usage)
-                .csrf(AbstractHttpConfigurer::disable);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Register JwtAuthFilter
 
         return http.build();
     }
@@ -35,7 +40,6 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    // PasswordEncoder bean to hash and verify passwords
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

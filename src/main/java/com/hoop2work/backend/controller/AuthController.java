@@ -28,14 +28,14 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
-        return ResponseEntity.ok("User registered");
+        return ResponseEntity.ok(Collections.singletonMap("message", "User registered"));
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> payload) {
         User user = userRepo.findByEmail(payload.get("email"));
         if (user == null || !passwordEncoder.matches(payload.get("password"), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("message", "Invalid credentials"));
         }
         String token = jwtService.generateToken(user.getUsername());
         return ResponseEntity.ok(Collections.singletonMap("token", token));

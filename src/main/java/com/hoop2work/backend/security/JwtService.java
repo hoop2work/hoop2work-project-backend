@@ -2,6 +2,7 @@ package com.hoop2work.backend.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -28,4 +29,10 @@ public class JwtService {
                 .getBody()
                 .getSubject();
     }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter(JwtService jwtService) {
+        return new JwtAuthFilter(jwtService);
+    }
+
 }
