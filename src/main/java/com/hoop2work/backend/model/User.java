@@ -1,12 +1,10 @@
 package com.hoop2work.backend.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -14,18 +12,46 @@ public class User {
     private Long id;
 
     @NotBlank(message = "Username is required")
-    @Column(nullable = false, unique = true)
+    @Size(max = 100, message = "Username must be at most 255 characters")
+    @Column(nullable = false, unique = true, length = 255)
     private String username;
 
-    @Email(message = "Invalid email format")
+    @NotBlank(message = "First name is required")
+    @Size(max = 100, message = "First name must be at most 255 characters")
+    @Column(nullable = false, length = 255)
+    private String firstName;
+
+    @NotBlank(message = "Last name is required")
+    @Size(max = 100, message = "Last name must be at most 255 characters")
+    @Column(nullable = false, length = 255)
+    private String lastName;
+
     @NotBlank(message = "Email is required")
-    @Column(nullable = false, unique = true)
+    @Email(message = "Invalid email format")
+    @Size(max = 100, message = "Email must be at most 255 characters")
+    @Column(nullable = false, length = 255)
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
-    @Column(nullable = false)
+    @Size(max = 255, message = "Password must be at most 255 characters")
+    @Column(nullable = false, length = 255)
     private String password;
+
+    @NotNull(message = "Newsletter subscription must be specified")
+    @Column(nullable = false)
+    private Boolean newsletter;
+
+
+    public User() {}
+
+    public User(String username, String firstName, String lastName, String email, String password, boolean newsletter) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.newsletter = newsletter;
+    }
 
     // Getters and setters
 
@@ -45,6 +71,22 @@ public class User {
         this.username = username;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -59,5 +101,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isNewsletter() {
+        return newsletter;
+    }
+
+    public void setNewsletter(boolean newsletter) {
+        this.newsletter = newsletter;
     }
 }
