@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -12,23 +12,23 @@ public class User {
     private Long id;
 
     @NotBlank(message = "Username is required")
-    @Size(max = 100, message = "Username must be at most 255 characters")
+    @Size(max = 255, message = "Username must be at most 255 characters")
     @Column(nullable = false, unique = true, length = 255)
     private String username;
 
     @NotBlank(message = "First name is required")
-    @Size(max = 100, message = "First name must be at most 255 characters")
+    @Size(max = 255, message = "First name must be at most 255 characters")
     @Column(nullable = false, length = 255)
     private String firstName;
 
     @NotBlank(message = "Last name is required")
-    @Size(max = 100, message = "Last name must be at most 255 characters")
+    @Size(max = 255, message = "Last name must be at most 255 characters")
     @Column(nullable = false, length = 255)
     private String lastName;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
-    @Size(max = 100, message = "Email must be at most 255 characters")
+    @Size(max = 255, message = "Email must be at most 255 characters")
     @Column(nullable = false, length = 255)
     private String email;
 
@@ -53,7 +53,6 @@ public class User {
         this.newsletter = newsletter;
     }
 
-    // Getters and setters
 
     public Long getId() {
         return id;
