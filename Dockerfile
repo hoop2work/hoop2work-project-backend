@@ -1,7 +1,7 @@
 # Use OpenJDK 17 slim image
 FROM openjdk:17-jdk-slim
 
-# Install curl (needed for wait-for-it script)
+# Install curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -13,7 +13,8 @@ COPY target/hoop2work-project-backend-0.0.1-SNAPSHOT.jar app.jar
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
-EXPOSE 4000
+# Expose the phpMyAdmin port
+EXPOSE 8080
 
-# Wait for MySQL to be available, then start the app
+# Wait for MySQL container to be ready, then start the Spring Boot app
 ENTRYPOINT ["/wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]

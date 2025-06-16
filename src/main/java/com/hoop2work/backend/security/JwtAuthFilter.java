@@ -1,7 +1,9 @@
 package com.hoop2work.backend.security;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -30,11 +32,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             try {
                 String username = jwtService.extractUsername(token);
 
-                var auth = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    var auth = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
             } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
+                // Invalid token - do NOT send 403 here, just proceed without authentication
+                // Spring Security will handle unauthorized access properly later
             }
         }
 

@@ -8,31 +8,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: hoop2workdb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-    networks:
-      - hoop-network
-
-  backend:
-    build:
-      dockerfile: Dockerfile
-    container_name: hoop2work-backend
-    depends_on:
-      - mysql
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hoop2workdb
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: "true"
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
-      SERVER_PORT: 4000
-    ports:
-      - "4000:4000"
     networks:
       - hoop-network
 
@@ -44,6 +23,8 @@ services:
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
     ports:
       - "8080:80"
     networks:
