@@ -1,40 +1,29 @@
 package com.hoop2work.backend.controller;
 
 import com.hoop2work.backend.model.PredefinedTrip;
-import com.hoop2work.backend.repository.PredefinedTripRepository;
+import com.hoop2work.backend.security.SecuredEndpoint;
+import com.hoop2work.backend.service.PredefinedTripService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.List;
 
 @RestController
-@RequestMapping("/predefined-trip")
+@RequestMapping("/api/predefined-trips")
 public class PredefinedTripController {
 
     @Autowired
-    private PredefinedTripRepository predefinedTripRepo;
+    private PredefinedTripService predefinedTripService;
 
+    @SecuredEndpoint
     @GetMapping
-    public ResponseEntity<List<PredefinedTrip>> getAllPredefinedTrips() {
-        System.out.println("getAllPredefinedTrips");
-        List<PredefinedTrip> predefinedTrips = predefinedTripRepo.findAll();
-        if (predefinedTrips.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(predefinedTrips, HttpStatus.OK);
-        }
+    public List<PredefinedTrip> getAllPredefinedTrips() {
+        return predefinedTripService.getAllPredefinedTrips();
     }
 
+    @SecuredEndpoint
     @GetMapping("/{id}")
-    public ResponseEntity<PredefinedTrip> getPredefinedTripById(@PathVariable Long id) {
-        Optional<PredefinedTrip> predefinedTrip = predefinedTripRepo.findById(id);
-        return predefinedTrip.map(trip -> new ResponseEntity<>(trip, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public PredefinedTrip getPredefinedTripById(@PathVariable Long id) {
+        return predefinedTripService.getPredefinedTripById(id);
     }
 }
