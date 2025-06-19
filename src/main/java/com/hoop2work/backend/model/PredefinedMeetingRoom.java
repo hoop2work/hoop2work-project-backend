@@ -1,9 +1,11 @@
 package com.hoop2work.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "predefined_meeting_room")
 public class PredefinedMeetingRoom {
 
