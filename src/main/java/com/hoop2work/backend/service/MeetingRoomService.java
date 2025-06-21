@@ -2,6 +2,7 @@ package com.hoop2work.backend.service;
 
 import com.hoop2work.backend.model.MeetingRoomInstance;
 import com.hoop2work.backend.model.PredefinedMeetingRoom;
+import com.hoop2work.backend.model.Team;
 import com.hoop2work.backend.model.TripInstance;
 import com.hoop2work.backend.repository.MeetingRoomInstanceRepository;
 import com.hoop2work.backend.repository.PredefinedMeetingRoomRepository;
@@ -69,6 +70,10 @@ public class MeetingRoomService {
 
     public List<MeetingRoomInstance> getByTripId(Long tripId) {
         return meetingRoomInstanceRepository.findByTripInstanceId(tripId);
+    }
+
+    public List<PredefinedMeetingRoom> getAllPredefinedMeedingRooms() {
+        return predefinedMeetingRoomRepository.findAll();
     }
 
     public void delete(Long id) {

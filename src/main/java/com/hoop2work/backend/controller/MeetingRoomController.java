@@ -1,6 +1,9 @@
 package com.hoop2work.backend.controller;
 
 import com.hoop2work.backend.model.MeetingRoomInstance;
+import com.hoop2work.backend.model.PredefinedMeetingRoom;
+import com.hoop2work.backend.model.Team;
+import com.hoop2work.backend.repository.PredefinedMeetingRoomRepository;
 import com.hoop2work.backend.service.MeetingRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +50,11 @@ public class MeetingRoomController {
     @GetMapping("/by-trip/{tripId}")
     public ResponseEntity<List<MeetingRoomInstance>> getByTripId(@PathVariable Long tripId) {
         return ResponseEntity.ok(meetingRoomService.getByTripId(tripId));
+    }
+
+    @GetMapping("/predefined")
+    public ResponseEntity<List<PredefinedMeetingRoom>> getAllPredefinedMeetingRooms() {
+        return ResponseEntity.ok(meetingRoomService.getAllPredefinedMeedingRooms());
     }
 
     @DeleteMapping("/{id}")

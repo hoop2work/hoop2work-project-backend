@@ -31,6 +31,11 @@ public class TeamController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<Team>> getAllTeams() {
+        return ResponseEntity.ok(teamService.getAllTeams());
+    }
+
     // Get all teams for a specific user (public)
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Team>> getTeamsByUserId(@PathVariable Long userId) {

@@ -38,6 +38,10 @@ public class TeamService {
                 .collect(Collectors.toList());
     }
 
+    public List<Team> getAllTeams() {
+        return teamRepository.findAll();
+    }
+
     public List<User> getUsersByTeamId(Long teamId) {
         return teamUserRepository.findByTeamId(teamId)
                 .stream()

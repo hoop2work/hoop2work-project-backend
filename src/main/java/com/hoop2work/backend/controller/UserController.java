@@ -1,5 +1,6 @@
 package com.hoop2work.backend.controller;
 
+import com.hoop2work.backend.model.PredefinedTrip;
 import com.hoop2work.backend.model.User;
 import com.hoop2work.backend.service.UserService;
 import jakarta.validation.Valid;
@@ -8,6 +9,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -72,5 +74,10 @@ public class UserController {
                 "lastName", user.getLastName(),
                 "email", user.getEmail() != null ? user.getEmail() : ""
         ));
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }

@@ -1,11 +1,13 @@
 package com.hoop2work.backend.service;
 
+import com.hoop2work.backend.model.PredefinedTrip;
 import com.hoop2work.backend.model.User;
 import com.hoop2work.backend.repository.UserRepository;
 import com.hoop2work.backend.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -45,5 +47,9 @@ public class UserService {
             return null;
         }
         return userRepo.findByUsername(username);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
     }
 }
